@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import { motion as m } from "framer-motion";
 
 export default function Home() {
+  //formik logics
+
   const router = useRouter();
 
   const formik = useFormik({
@@ -19,13 +21,33 @@ export default function Home() {
 
     validationSchema: Yup.object({
       name: Yup.string()
-        .max(20, "Name must be 20 characters or less.")
-        .required("Name is required"),
+        .max(20, "must be 20 characters or less")
+        .required("name is required"),
       email: Yup.string()
-        .email("Invalid email address")
-        .required("Email is required"),
-      terms: Yup.array().required("Terms of service must be checked"),
+        .email("invalid email address")
+        .max(20, "must be 20 characters or less")
+        .required("email is required"),
+      terms: Yup.array().required("Terms of service must be chcked"),
     }),
+
+    onSubmit: (values) => {
+      console.log(values);
+      router.push({ pathname: "/success", query: values });
+    },
+  });
+
+  console.log(formik.errors);
+
+  console.log("formik-values");
+
+  validationSchema: Yup.object({
+    name: Yup.string()
+      .max(20, "Name must be 20 characters or less.")
+      .required("Name is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    terms: Yup.array().required("Terms of service must be checked"),
 
     onSubmit: (values) => {
       console.log("form submitted");
@@ -47,118 +69,110 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="  h-screen items-center flex justify-center">
+      <main className=" h-screen items-center flex justify-center min-w-fit">
         <form
-          onSubmit={formik.handleSubmit}
           className="bg-white flex rounded-lg w-1/2 font-latoRegular"
+          onSubmit={formik.handleSubmit}
         >
-          <div className="flex-1 text-gray-700  p-20">
-            <h1 className="text-3xl pb-2 font-latoBold">
-              Let's get started 👋
-            </h1>
-            <p className="text-lg  text-gray-500">
-              Join our E-learning platform today and unlock over 500+ courses
-              and digital assets ready to download.
-            </p>
-            <div className="mt-6 ">
-              {/* Name input field */}
+          <div className="flex-1 text-gray-700 p-20">
+            <h1 className="text-3xl font-latoBold pb-2">lets get started</h1>
+            <p className="text-lg text-gray-500">Join today!</p>
+            <div className="mt-6">
+              {/* Name */}
               <div className="pb-4">
                 <label
-                  htmlFor="name"
                   className={`block font-latoBold text-sm pb-2 ${
                     formik.touched.name && formik.errors.name
                       ? "text-red-400"
                       : ""
-                  } `}
+                  }`}
+                  htmlFor="name"
                 >
                   {formik.touched.name && formik.errors.name
                     ? formik.errors.name
                     : "Name"}
                 </label>
-                <p className="text-sm font-latoBold text-red-400 "></p>
                 <input
-                  className="border-2 border-gray-500 p-2 rounded-md w-1/2 focus:border-teal-500 focus:ring-teal-500 "
+                  className="border-2 border-gray-500 p-2 rounded-md w-1/2 focus:border-teal-500 focus:ring-teal-500"
                   type="text"
                   name="name"
-                  placeholder="Enter your name"
-                  onChange={formik.handleChange}
                   value={formik.values.name}
+                  onChange={formik.handleChange}
+                  placeholder="Enter your name"
                   onBlur={formik.handleBlur}
                 />
               </div>
-              {/* Email input field */}
+
+              {/* Email */}
               <div className="pb-4">
                 <label
-                  htmlFor="email"
                   className={`block font-latoBold text-sm pb-2 ${
                     formik.touched.email && formik.errors.email
                       ? "text-red-400"
-                      : ""
+                      : "Name"
                   }`}
+                  htmlFor="email"
                 >
                   {formik.touched.email && formik.errors.email
                     ? formik.errors.email
                     : "Email"}
                 </label>
-
-                <p></p>
                 <input
                   className="border-2 border-gray-500 p-2 rounded-md w-1/2 focus:border-teal-500 focus:ring-teal-500"
                   type="email"
                   name="email"
-                  placeholder="Enter your email address"
-                  onChange={formik.handleChange}
                   value={formik.values.email}
+                  onChange={formik.handleChange}
+                  placeholder="Enter your email"
                   onBlur={formik.handleBlur}
                 />
               </div>
-              {/* Country input field */}
+
+              {/* countries */}
               <div className="pb-4">
                 <label
-                  htmlFor="country"
                   className="block font-latoBold text-sm pb-2"
+                  htmlFor="country"
                 >
-                  Country
+                  Countries
                 </label>
+
                 <select
-                  className="border-2 border-gray-500 p-2 rounded-md w-1/2 focus:border-teal-500 focus:ring-teal-500"
                   name="country"
-                  onChange={formik.handleChange}
-                  value={formik.values.country}
+                  className="border-2 border-gray-500 p-2 rounded-md w-1/2 focus:border-teal-500 focus:ring-teal-500"
                 >
-                  <option>United States</option>
-                  <option>United Kingdom</option>
-                  <option>Germany</option>
+                  <option value="">United States</option>
+                  <option value="">United Kingdom</option>
+                  <option value="">Germany</option>
+                  <option value="">Norway</option>
                 </select>
               </div>
-              {/* Terms of service*/}
+
               <div className="pb-4">
                 <label
-                  htmlFor="terms"
                   className={`block font-latoBold text-sm pb-2 ${
                     formik.touched.terms && formik.errors.terms
                       ? "text-red-400"
-                      : ""
+                      : "terms"
                   }`}
+                  htmlFor="terms"
                 >
                   {formik.touched.terms && formik.errors.terms
                     ? formik.errors.terms
                     : "Terms of service"}
                 </label>
-
-                <div className="flex items-center gap-2">
+                <p className="text-sm mb-4 text-gray-500 font-latoBold">
+                  I have read and agreed to the terms of service
+                </p>
+                <div className="flex items-center">
                   <input
                     type="checkbox"
                     name="terms"
                     value="checked"
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="h-5 w-5 text-teal-500 border-2  background-gray-500 focus:border-teal-500 focus:ring-teal-500"
+                    className="h-5 w-5 text-teal-500 border-2 focus:border-teal-500 focus:ring-teal:50"
                   />
-                  <p className="text-sm font-latoBold text-gray-500">
-                    I agree to the Terms and Service that my data will be taken
-                    and sold.
-                  </p>
+                  <p className="text-sm font-latoBold text-gray-500 "></p>
                 </div>
               </div>
               <button
@@ -169,13 +183,18 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <div className="relative flex-1">
+          <div className="flex-1 relative">
             <Image
-              className=" object-cover rounded-lg"
-              fill
-              priority
-              src={formImage}
               alt="form-learn"
+              src={formImage}
+              className="object-cover rounded-lg"
+              priority={true}
+              fill
+              sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
+              placeholder="blur"
+              as="true"
             />
           </div>
         </form>
